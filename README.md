@@ -95,3 +95,147 @@ git commit -m "message"
 ↓
 git push
 ```
+
+
+
+# Git Branching
+
+A branch is a separate line of development.
+
+It allows us to work on a new feature without directly changing the `main` branch.
+
+## Check Branches
+
+```bash
+git branch
+```
+
+Example:
+
+```text
+* main
+  feature-test
+```
+
+The `*` shows the branch I am currently using.
+
+## Create a Branch from GitHub
+
+First, I created a branch named:
+
+```text
+feature-test
+```
+
+from GitHub.
+
+Then I fetched the latest remote branches:
+
+```bash
+git fetch
+```
+
+To check remote branches:
+
+```bash
+git branch -r
+```
+
+Then I switched to the branch:
+
+```bash
+git switch feature-test
+```
+
+## Work on the Branch
+
+I created a JavaScript file:
+
+```bash
+touch feature.js
+```
+
+Then I added, committed, and pushed it:
+
+```bash
+git add feature.js
+git commit -m "Add feature JavaScript file"
+git push
+```
+
+## Create a Branch from CLI
+
+First, switch to `main`:
+
+```bash
+git switch main
+```
+
+Create a new branch:
+
+```bash
+git branch cli-feature
+```
+
+Then switch to it:
+
+```bash
+git switch cli-feature
+```
+
+## Important Branch Concept
+
+When a new branch is created from `main`, it initially contains the same files and commit history as `main`.
+
+Example:
+
+```text
+main
+├── index.js
+└── README.md
+
+cli-feature
+├── index.js
+└── README.md
+```
+
+After creating the branch, new changes can be made separately inside `cli-feature`.
+
+## Push a Locally Created Branch
+
+After making changes:
+
+```bash
+git add .
+git commit -m "Add CLI feature"
+```
+
+For the first push:
+
+```bash
+git push -u origin cli-feature
+```
+
+After that, I can simply use:
+
+```bash
+git push
+```
+
+## Branch Workflow
+
+```text
+main
+↓
+create branch
+↓
+switch to branch
+↓
+make changes
+↓
+git add
+↓
+git commit
+↓
+git push
+```
