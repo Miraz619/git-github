@@ -1,0 +1,1 @@
+console.log("This file was created using the VS Code Git UI");
