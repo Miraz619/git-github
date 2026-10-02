@@ -529,3 +529,277 @@ git switch main
 ↓
 git pull
 ```
+
+
+
+```md
+# Git and GitHub Using VS Code UI
+
+VS Code provides a graphical interface for Git, so many Git tasks can be done without using terminal commands.
+
+## Open Source Control
+
+Open the Source Control panel from the left sidebar or use:
+
+```text
+Ctrl + Shift + G
+```
+
+The Source Control panel shows changed, staged, and untracked files.
+
+This is similar to:
+
+```bash
+git status
+```
+
+---
+
+## Stage Changes Using VS Code UI
+
+After changing a file, it appears under:
+
+```text
+Changes
+```
+
+Click the `+` icon beside the file.
+
+This is the same as:
+
+```bash
+git add file-name
+```
+
+After staging, the file moves to:
+
+```text
+Staged Changes
+```
+
+---
+
+## Commit Using VS Code UI
+
+After staging:
+
+1. Write a commit message in the Source Control message box.
+2. Click **Commit**.
+
+This is similar to:
+
+```bash
+git commit -m "commit message"
+```
+
+---
+
+## Push Using VS Code UI
+
+After committing, VS Code may show:
+
+```text
+Push
+```
+
+or:
+
+```text
+Sync Changes
+```
+
+Click it to send the commit to GitHub.
+
+This is similar to:
+
+```bash
+git push
+```
+
+Example:
+
+```text
+↑1
+```
+
+means there is 1 local commit that has not been pushed yet.
+
+Example:
+
+```text
+↓2 ↑1
+```
+
+means:
+
+```text
+↓2 = 2 remote commits are not available locally
+↑1 = 1 local commit has not been pushed
+```
+
+---
+
+# Create a Branch Using VS Code UI
+
+Click the current branch name from the bottom-left corner of VS Code.
+
+Example:
+
+```text
+main
+```
+
+Then select:
+
+```text
+Create new branch...
+```
+
+Enter a branch name, for example:
+
+```text
+ui-feature
+```
+
+Choose `main` as the source branch if needed.
+
+VS Code creates the branch and usually switches to it automatically.
+
+---
+
+## Publish the Branch
+
+A newly created branch exists only locally at first.
+
+VS Code may show:
+
+```text
+Publish Branch
+```
+
+Click it to publish the branch to GitHub.
+
+This is similar to:
+
+```bash
+git push -u origin ui-feature
+```
+
+After publishing:
+
+```text
+Local branch:
+ui-feature
+
+Remote branch:
+origin/ui-feature
+```
+
+---
+
+## Work on the UI Branch
+
+Example file:
+
+```text
+ui.js
+```
+
+Example code:
+
+```js
+console.log("This file was created using the VS Code Git UI");
+```
+
+Then use the VS Code UI workflow:
+
+```text
+Change file
+↓
+Click +
+↓
+Stage Changes
+↓
+Write commit message
+↓
+Commit
+↓
+Push / Sync Changes
+```
+
+---
+
+# Switching Branches with Uncommitted Changes
+
+Suppose the current branch is:
+
+```text
+ui-feature
+```
+
+and a new file is created:
+
+```text
+ui.js
+```
+
+but the file is not committed yet.
+
+Then switch to another branch:
+
+```bash
+git switch another-feature
+```
+
+If Git allows the branch switch, the uncommitted file may still remain in the working directory.
+
+If the file is then staged and committed while on `another-feature`:
+
+```bash
+git add ui.js
+git commit -m "Add ui.js"
+git push
+```
+
+the commit belongs to:
+
+```text
+another-feature
+```
+
+not:
+
+```text
+ui-feature
+```
+
+## Important Rule
+
+The commit belongs to the branch that is active when the commit is created.
+
+Example:
+
+```text
+Create ui.js on ui-feature
+↓
+Do not commit
+↓
+Switch to another-feature
+↓
+git add
+↓
+git commit
+↓
+Commit belongs to another-feature
+```
+
+Git may prevent switching branches if the uncommitted changes conflict with files in the target branch.
+
+Before switching branches, check:
+
+```bash
+git status
+```
+
+This helps confirm whether there are any uncommitted changes.
+```
