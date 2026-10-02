@@ -1201,6 +1201,112 @@ A
 
 
 ```md
+# Git Stash
+
+`git stash` is used to temporarily save unfinished changes without creating a commit.
+
+It is useful when work is not finished, but another task needs to be done first.
+
+---
+
+## Why Use Git Stash
+
+Example:
+
+```text
+Working on a feature
+↓
+Changes are not finished
+↓
+Need to switch branch for another task
+↓
+git stash
+↓
+Changes are temporarily hidden
+↓
+Do other work
+↓
+Come back
+↓
+Restore the changes
+```
+
+Simple idea:
+
+```text
+git stash = temporarily save unfinished work
+```
+
+---
+
+## Practice Branch
+
+A separate branch was created:
+
+```bash
+git branch stash-practice
+git switch stash-practice
+```
+
+---
+
+## Create an Unfinished Change
+
+Example file:
+
+```text
+stash.js
+```
+
+Example code:
+
+```js
+console.log("Learning git stash");
+```
+
+The file was not committed.
+
+Check changes:
+
+```bash
+git status
+```
+
+---
+
+## Stash the Changes
+
+For tracked files:
+
+```bash
+git stash
+```
+
+For new/untracked files too:
+
+```bash
+git stash -u
+```
+
+`-u` means:
+
+```text
+include untracked files
+```
+
+After stashing, the unfinished changes disappear from the working directory.
+
+They are not deleted.
+
+Git saves them temporarily.
+
+---
+
+## Check Saved Stashes
+
+```bash
+git stash list
+```
 # Git Bisect
 
 `git bisect` is used to find which commit first introduced a bug.
@@ -1292,6 +1398,186 @@ Git checks a commit around the middle.
 Example:
 
 ```text
+stash@{0}: WIP on stash-practice: 1e469cc Merge pull request #5
+```
+
+Meaning:
+
+```text
+stash@{0}
+= latest stash
+
+WIP on stash-practice
+= stash was created while working on stash-practice
+
+1e469cc
+= commit the branch was pointing to at that time
+```
+
+---
+
+# Git Stash Pop
+
+```bash
+git stash pop
+```
+
+This brings back the latest stashed changes.
+
+It also removes that stash from the stash list.
+
+Simple meaning:
+
+```text
+git stash pop
+= restore changes + remove stash
+```
+
+Example:
+
+```text
+unfinished work
+↓
+git stash
+↓
+work hidden
+↓
+git stash pop
+↓
+work comes back
+```
+
+---
+
+# Git Stash Apply
+
+```bash
+git stash apply
+```
+
+This also brings back the stashed changes.
+
+But unlike `pop`, it keeps the stash saved.
+
+Simple meaning:
+
+```text
+git stash apply
+= restore changes + keep stash
+```
+
+---
+
+## Pop vs Apply
+
+```text
+git stash pop
+= restore + remove stash
+
+git stash apply
+= restore + keep stash
+```
+
+Easy way to remember:
+
+```text
+pop   = bring it back and remove backup
+apply = bring it back and keep backup
+```
+
+---
+
+# Delete a Stash Manually
+
+If `git stash apply` was used, the stash is still saved.
+
+Check:
+
+```bash
+git stash list
+```
+
+Then delete a specific stash:
+
+```bash
+git stash drop stash@{0}
+```
+
+Meaning:
+
+```text
+delete this saved stash
+```
+
+Check again:
+
+```bash
+git stash list
+```
+
+---
+
+# Git Stash Workflow
+
+```text
+Make unfinished changes
+↓
+git status
+↓
+git stash
+or
+git stash -u
+↓
+Changes are temporarily hidden
+↓
+Switch branch / do other work
+↓
+Come back
+↓
+git stash pop
+or
+git stash apply
+```
+
+---
+
+# Simple Summary
+
+```bash
+git stash
+```
+
+Temporarily save tracked changes.
+
+```bash
+git stash -u
+```
+
+Temporarily save tracked and untracked changes.
+
+```bash
+git stash list
+```
+
+Show saved stashes.
+
+```bash
+git stash pop
+```
+
+Restore changes and remove the stash.
+
+```bash
+git stash apply
+```
+
+Restore changes but keep the stash.
+
+```bash
+git stash drop stash@{0}
+```
+
+Delete a specific stash.
 Commit 1 ✅
 Commit 2 ✅
 Commit 3 ❌
@@ -1444,5 +1730,6 @@ Finish bisect and go back to the original position.
 
 ## Main Idea
 
+`git stash` is useful when unfinished work needs to be kept temporarily without creating a commit.
 `git bisect` finds the commit where a bug started by checking commits in the middle and reducing the search area by half each time.
 ```
