@@ -10,6 +10,11 @@ function multiply(a, b) {
   return a * b;
 }
 
+function divide(a, b) {
+  return a / b;
+}
+
 console.log(add(2, 3));
 console.log(subtract(5, 2));
 console.log(multiply(4, 3));
+console.log(divide(10, 2));
