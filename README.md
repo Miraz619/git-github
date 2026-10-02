@@ -1307,6 +1307,93 @@ Git saves them temporarily.
 ```bash
 git stash list
 ```
+# Git Bisect
+
+`git bisect` is used to find which commit first introduced a bug.
+
+It checks commits using a half-by-half search instead of checking every commit one by one.
+
+---
+
+## Example
+
+Suppose the commit history looks like this:
+
+```text
+Commit 1 ✅ Good
+Commit 2 ✅ Good
+Commit 3 ❌ Bug starts here
+Commit 4 ❌ Bad
+Commit 5 ❌ Bad
+```
+
+We know an old commit was working and the current commit is broken.
+
+`git bisect` helps find the first bad commit.
+
+---
+
+## Start Git Bisect
+
+```bash
+git bisect start
+```
+
+This starts bisect mode.
+
+---
+
+## Mark the Current Commit as Bad
+
+If the current code is broken:
+
+```bash
+git bisect bad
+```
+
+Example:
+
+```text
+5 - 2 should be 3
+
+But output is:
+
+7
+```
+
+So the current commit is bad.
+
+---
+
+## Mark an Older Commit as Good
+
+First check the commit history:
+
+```bash
+git log --oneline
+```
+
+Then choose a commit that was working correctly.
+
+Example:
+
+```bash
+git bisect good 51bbfef
+```
+
+Now Git knows:
+
+```text
+51bbfef = Good ✅
+
+Current commit = Bad ❌
+```
+
+---
+
+## How Git Bisect Searches
+
+Git checks a commit around the middle.
 
 Example:
 
@@ -1491,10 +1578,158 @@ git stash drop stash@{0}
 ```
 
 Delete a specific stash.
+Commit 1 ✅
+Commit 2 ✅
+Commit 3 ❌
+Commit 4 ❌
+Commit 5 ❌
+```
+
+Git may first check:
+
+```text
+Commit 3
+```
+
+Run the program:
+
+```bash
+node calculator.js
+```
+
+If it works:
+
+```bash
+git bisect good
+```
+
+If it is broken:
+
+```bash
+git bisect bad
+```
+
+Git then removes half of the commits from the search.
+
+It keeps repeating this process until it finds the first bad commit.
+
+This method is called:
+
+```text
+Binary Search
+```
+
+---
+
+## First Bad Commit Found
+
+In the practice example, Git found:
+
+```text
+864230b
+```
+
+Git showed:
+
+```text
+864230b is the first bad commit
+```
+
+This means:
+
+```text
+Before 864230b = code was working ✅
+
+864230b = bug was introduced ❌
+
+After 864230b = bug continued ❌
+```
+
+---
+
+## End Git Bisect
+
+After finding the bad commit:
+
+```bash
+git bisect reset
+```
+
+This ends bisect mode and returns to the original branch position.
+
+---
+
+## Git Bisect Workflow
+
+```text
+Bug found
+↓
+git log --oneline
+↓
+git bisect start
+↓
+git bisect bad
+↓
+git bisect good <good-commit-id>
+↓
+Git checks a commit
+↓
+Test the code
+↓
+Working → git bisect good
+Broken  → git bisect bad
+↓
+Repeat
+↓
+Git finds the first bad commit
+↓
+git bisect reset
+```
+
+---
+
+## Simple Summary
+
+```bash
+git bisect start
+```
+
+Start searching.
+
+```bash
+git bisect bad
+```
+
+Current commit is broken.
+
+```bash
+git bisect good <commit-id>
+```
+
+This older commit was working.
+
+```bash
+git bisect good
+```
+
+The commit Git is currently testing works.
+
+```bash
+git bisect bad
+```
+
+The commit Git is currently testing is broken.
+
+```bash
+git bisect reset
+```
+
+Finish bisect and go back to the original position.
 
 ---
 
 ## Main Idea
 
 `git stash` is useful when unfinished work needs to be kept temporarily without creating a commit.
+`git bisect` finds the commit where a bug started by checking commits in the middle and reducing the search area by half each time.
 ```
