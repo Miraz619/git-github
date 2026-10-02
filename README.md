@@ -6,6 +6,8 @@ This repository contains beginner-friendly notes and practice examples for learn
 
 # Table of Contents
 
+# Table of Contents
+
 1. [Git Basics](#1-git-basics)
 2. [Git Branching](#2-git-branching)
 3. [Pull Requests](#3-pull-requests)
@@ -15,6 +17,10 @@ This repository contains beginner-friendly notes and practice examples for learn
 7. [Git Stash](#7-git-stash)
 8. [Git Bisect](#8-git-bisect)
 9. [Quick Command Reference](#9-quick-command-reference)
+10. [Git Diff](#10-git-diff)
+11. [Git Log](#11-git-log)
+12. [Git Ignore](#12-git-ignore)
+13. [Merge Conflicts](#13-merge-conflicts)
 
 ---
 
@@ -1560,4 +1566,653 @@ Stash
 
 Bisect
 = find the commit that introduced a bug
+```
+```md
+# 10. Git Diff
+
+`git diff` is used to see what changed in the code.
+
+Simple idea:
+
+```text
+git diff = show code differences
+```
+
+---
+
+## Unstaged Changes
+
+```bash
+git diff
+```
+
+This shows changes that have been made but are not staged yet.
+
+Example:
+
+```diff
+-console.log("Hello");
++console.log("Hello Git");
+```
+
+Meaning:
+
+```text
+- = old/removed line
++ = new/added line
+```
+
+---
+
+## Staged Changes
+
+After:
+
+```bash
+git add diff.js
+```
+
+normal `git diff` may show nothing.
+
+To see staged changes:
+
+```bash
+git diff --staged
+```
+
+Simple difference:
+
+```text
+git diff
+= unstaged changes
+
+git diff --staged
+= staged changes
+```
+
+---
+
+## Compare Two Commits
+
+First check commit history:
+
+```bash
+git log --oneline
+```
+
+Then compare:
+
+```bash
+git diff <old-commit-id> <new-commit-id>
+```
+
+Example:
+
+```bash
+git diff 2334291 c84fb5e
+```
+
+This shows what changed between the two commits.
+
+---
+
+# 11. Git Log
+
+`git log` is used to see commit history.
+
+---
+
+## Detailed Commit History
+
+```bash
+git log
+```
+
+It shows:
+
+```text
+Commit ID
+Author
+Date
+Commit message
+```
+
+---
+
+## Short Commit History
+
+```bash
+git log --oneline
+```
+
+Example:
+
+```text
+c84fb5e Update greeting
+2334291 Add diff practice file
+```
+
+Meaning:
+
+```text
+c84fb5e
+= short commit ID
+
+Update greeting
+= commit message
+```
+
+---
+
+## Show Latest Commits
+
+Example:
+
+```bash
+git log -5
+```
+
+This shows the latest 5 commits.
+
+---
+
+## Show History of One File
+
+```bash
+git log --oneline -- filename
+```
+
+Example:
+
+```bash
+git log --oneline -- calculator.js
+```
+
+This shows commits related to `calculator.js`.
+
+---
+
+## Show Branch and Merge History
+
+```bash
+git log --oneline --graph --all
+```
+
+Meaning:
+
+```text
+--oneline
+= show each commit in one line
+
+--graph
+= draw branch and merge lines
+
+--all
+= show commits from all branches and refs
+```
+
+---
+
+## Important Git Log Symbols
+
+```text
+* = commit
+
+| = history continues
+
+\ = branch/history moves in another direction
+
+/ = histories join together
+```
+
+Example:
+
+```text
+*   Merge pull request
+|\
+| * feature commit
+| * feature commit
+|/
+*   older commit
+```
+
+Simple meaning:
+
+```text
+A branch had commits
+↓
+Then it was merged
+```
+
+---
+
+## HEAD
+
+Example:
+
+```text
+(HEAD -> diff-practice)
+```
+
+Means:
+
+```text
+You are currently on the diff-practice branch.
+```
+
+---
+
+## Local and Remote Main
+
+Example:
+
+```text
+(main, origin/main)
+```
+
+Meaning:
+
+```text
+main
+= local main branch
+
+origin/main
+= GitHub main branch
+```
+
+If both are beside the same commit, they are pointing to the same commit.
+
+---
+
+## Exit Git Log Viewer
+
+If Git opens a long log screen, press:
+
+```text
+q
+```
+
+to quit.
+
+---
+
+# 12. Git Ignore
+
+`.gitignore` tells Git which files or folders should not be tracked.
+
+Simple idea:
+
+```text
+.gitignore
+= files Git should ignore
+```
+
+---
+
+## Create `.gitignore`
+
+Create a file named exactly:
+
+```text
+.gitignore
+```
+
+Not:
+
+```text
+gitignore
+.gitignore.txt
+gitignore.txt
+```
+
+---
+
+## Ignore a File
+
+Example:
+
+```gitignore
+.env
+```
+
+This tells Git to ignore the `.env` file.
+
+---
+
+## Ignore a Folder
+
+Example:
+
+```gitignore
+node_modules/
+```
+
+This tells Git to ignore the entire `node_modules` folder.
+
+---
+
+## Ignore a File Type
+
+Example:
+
+```gitignore
+*.log
+```
+
+This ignores all files ending with:
+
+```text
+.log
+```
+
+---
+
+## Add Comments
+
+Use `#` for comments:
+
+```gitignore
+# Environment files
+.env
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+```
+
+---
+
+## Basic Node.js `.gitignore`
+
+```gitignore
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+
+# Logs
+*.log
+
+# Build folders
+dist/
+build/
+```
+
+---
+
+## Important `.gitignore` Rule
+
+`.gitignore` works best for files that are not already tracked.
+
+If a file was already committed before adding it to `.gitignore`, Git may continue tracking it.
+
+---
+
+# 13. Merge Conflicts
+
+A merge conflict happens when Git cannot decide which code to keep.
+
+This usually happens when two branches change the same part of the same file differently.
+
+---
+
+## Example
+
+Branch A:
+
+```js
+console.log("Hello from branch A");
+```
+
+Branch B:
+
+```js
+console.log("Hello from branch B");
+```
+
+When Git tries to merge them, it cannot automatically choose one.
+
+So Git creates a merge conflict.
+
+---
+
+## Conflict Markers
+
+Git may show:
+
+```text
+<<<<<<< HEAD
+console.log("Hello from branch B");
+=======
+console.log("Hello from branch A");
+>>>>>>> conflict-a
+```
+
+Meaning:
+
+```text
+<<<<<<< HEAD
+= current branch code
+
+=======
+= separator
+
+>>>>>>> conflict-a
+= incoming branch code
+```
+
+If the current branch is `conflict-b`:
+
+```text
+Current Change
+= conflict-b
+
+Incoming Change
+= conflict-a
+```
+
+---
+
+## Resolve Conflict in VS Code
+
+VS Code may show:
+
+```text
+Accept Current Change
+Accept Incoming Change
+Accept Both Changes
+```
+
+Meaning:
+
+```text
+Accept Current Change
+= keep current branch code
+
+Accept Incoming Change
+= keep incoming branch code
+
+Accept Both Changes
+= keep both versions
+```
+
+---
+
+## Resolve Conflict Manually
+
+Choose the final code.
+
+For example:
+
+```js
+console.log("Hello from branch B");
+```
+
+Then remove:
+
+```text
+<<<<<<< HEAD
+=======
+>>>>>>> conflict-a
+```
+
+---
+
+## Mark Conflict as Resolved
+
+After fixing the file:
+
+```bash
+git add conflicts.js
+```
+
+Then commit:
+
+```bash
+git commit -m "Resolve merge conflict"
+```
+
+---
+
+## Merge Conflict Workflow
+
+```text
+Merge branches
+↓
+Conflict happens
+↓
+Choose final code
+↓
+Remove conflict markers
+↓
+git add <file>
+↓
+git commit
+↓
+Conflict resolved
+```
+
+---
+
+## Cancel a Merge
+
+If the merge becomes confusing or the wrong branch was merged:
+
+```bash
+git merge --abort
+```
+
+Simple meaning:
+
+```text
+Cancel the merge
+and
+go back to the state before the merge started
+```
+
+---
+
+## Important Merge Conflict Rule
+
+Before committing, make sure:
+
+```text
+<<<<<<<
+=======
+>>>>>>>
+```
+
+are removed from the file.
+
+Then:
+
+```bash
+git add <file>
+git commit -m "Resolve merge conflict"
+```
+
+---
+
+# Quick Summary
+
+## Git Diff
+
+```bash
+git diff
+```
+
+Show unstaged changes.
+
+```bash
+git diff --staged
+```
+
+Show staged changes.
+
+```bash
+git diff <commit1> <commit2>
+```
+
+Compare two commits.
+
+---
+
+## Git Log
+
+```bash
+git log
+```
+
+Detailed history.
+
+```bash
+git log --oneline
+```
+
+Short history.
+
+```bash
+git log --oneline --graph --all
+```
+
+Show branch and merge history.
+
+---
+
+## Git Ignore
+
+```gitignore
+.env
+node_modules/
+*.log
+```
+
+Ignore files, folders, and file types.
+
+---
+
+## Merge Conflict
+
+```text
+Two branches change the same code
+↓
+Git cannot choose
+↓
+Conflict
+↓
+Choose final code
+↓
+git add
+↓
+git commit
+```
+
+Cancel the merge:
+
+```bash
+git merge --abort
+```
 ```
