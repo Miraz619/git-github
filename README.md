@@ -1,10 +1,26 @@
 # Git & GitHub Learning Notes
 
-This repository contains my practice while learning Git and GitHub.
+This repository contains beginner-friendly notes and practice examples for learning Git and GitHub.
 
-## What I Have Learned So Far
+---
 
-### 1. Open a Project Folder in VS Code
+# Table of Contents
+
+1. [Git Basics](#1-git-basics)
+2. [Git Branching](#2-git-branching)
+3. [Pull Requests](#3-pull-requests)
+4. [Git Pull and Fetch](#4-git-pull-and-fetch)
+5. [Git Using VS Code UI](#5-git-using-vs-code-ui)
+6. [Git Reset](#6-git-reset)
+7. [Git Stash](#7-git-stash)
+8. [Git Bisect](#8-git-bisect)
+9. [Quick Command Reference](#9-quick-command-reference)
+
+---
+
+# 1. Git Basics
+
+## Open a Project in VS Code
 
 ```bash
 code .
@@ -12,75 +28,126 @@ code .
 
 `code .` opens the current folder in VS Code.
 
-### 2. Initialize Git
+---
+
+## Initialize Git
 
 ```bash
 git init
 ```
 
-This initializes Git inside the project.
+Starts Git inside the current project.
 
-### 3. Check Git Status
+---
+
+## Check Git Status
 
 ```bash
 git status
 ```
 
-This shows the current state of the repository, including untracked, modified, and staged files.
+Shows:
 
-### 4. Add Files to Staging
+- Untracked files
+- Modified files
+- Staged files
+- Current branch information
+
+---
+
+## Stage Changes
+
+Stage all changes:
 
 ```bash
 git add .
 ```
 
-This adds all changed files to the staging area.
+Stage one file:
 
-### 5. Create a Commit
+```bash
+git add filename
+```
+
+Staging means:
+
+> The changes are selected and ready for the next commit.
+
+Simple flow:
+
+```text
+Change file
+↓
+git add
+↓
+Staged
+↓
+git commit
+```
+
+---
+
+## Create a Commit
 
 ```bash
 git commit -m "Initial commit"
 ```
 
-A commit saves a snapshot of the current changes in Git history.
+A commit saves a snapshot of the staged changes in Git history.
 
-### 6. Rename the Branch to `main`
+Simple idea:
+
+```text
+Changed
+↓
+Staged
+↓
+Committed
+```
+
+---
+
+## Rename Branch to Main
 
 ```bash
 git branch -M main
 ```
 
-This renames the current branch to `main`.
+Renames the current branch to `main`.
 
-### 7. Connect the Local Repository to GitHub
+---
+
+## Connect Local Repository to GitHub
 
 ```bash
 git remote add origin <repository-url>
 ```
 
-This connects the local Git repository to a GitHub repository.
-
-### 8. Check the Remote Repository
+Check the connected remote:
 
 ```bash
 git remote -v
 ```
 
-This shows which remote repository is connected to the local project.
+---
 
-### 9. Push Code to GitHub
+## Push to GitHub
+
+First push:
 
 ```bash
 git push -u origin main
 ```
 
-This pushes the local `main` branch to GitHub.
-
-After the first push, I can usually use:
+After that:
 
 ```bash
 git push
 ```
+
+`-u` connects the local branch with the remote branch.
+
+---
 
 ## Basic Git Workflow
 
@@ -96,15 +163,17 @@ git commit -m "message"
 git push
 ```
 
+---
 
-
-# Git Branching
+# 2. Git Branching
 
 A branch is a separate line of development.
 
-It allows us to work on a new feature without directly changing the `main` branch.
+Branches allow new features or changes to be developed without directly changing `main`.
 
-## Check Branches
+---
+
+## Check Local Branches
 
 ```bash
 git branch
@@ -117,77 +186,84 @@ Example:
   feature-test
 ```
 
-The `*` shows the branch I am currently using.
+The `*` shows the current branch.
 
-## Create a Branch from GitHub
+---
 
-First, I created a branch named:
-
-```text
-feature-test
-```
-
-from GitHub.
-
-Then I fetched the latest remote branches:
-
-```bash
-git fetch
-```
-
-To check remote branches:
+## Check Remote Branches
 
 ```bash
 git branch -r
 ```
 
-Then I switched to the branch:
+Example:
+
+```text
+origin/main
+origin/feature-test
+```
+
+---
+
+## Create a Branch from GitHub
+
+If a branch is created on GitHub, first get the latest remote information:
+
+```bash
+git fetch
+```
+
+Check remote branches:
+
+```bash
+git branch -r
+```
+
+Then switch to the branch:
 
 ```bash
 git switch feature-test
 ```
 
-## Work on the Branch
+Git can create a local tracking branch automatically when the remote branch exists.
 
-I created a JavaScript file:
-
-```bash
-touch feature.js
-```
-
-Then I added, committed, and pushed it:
-
-```bash
-git add feature.js
-git commit -m "Add feature JavaScript file"
-git push
-```
+---
 
 ## Create a Branch from CLI
 
-First, switch to `main`:
+First switch to the branch that should be the starting point:
 
 ```bash
 git switch main
 ```
 
-Create a new branch:
+Create a branch:
 
 ```bash
 git branch cli-feature
 ```
 
-Then switch to it:
+Switch to it:
 
 ```bash
 git switch cli-feature
 ```
 
+---
+
 ## Important Branch Concept
 
-When a new branch is created from `main`, it initially contains the same files and commit history as `main`.
+A new branch starts from the commit where it was created.
 
 Example:
+
+```text
+main
+├── index.js
+└── README.md
+```
+
+After creating `cli-feature` from `main`:
 
 ```text
 main
@@ -199,9 +275,13 @@ cli-feature
 └── README.md
 ```
 
-After creating the branch, new changes can be made separately inside `cli-feature`.
+At first, both branches have the same files.
 
-## Push a Locally Created Branch
+New changes can then be made separately.
+
+---
+
+## Push a New Local Branch
 
 After making changes:
 
@@ -210,17 +290,19 @@ git add .
 git commit -m "Add CLI feature"
 ```
 
-For the first push:
+First push:
 
 ```bash
 git push -u origin cli-feature
 ```
 
-After that, I can simply use:
+After that:
 
 ```bash
 git push
 ```
+
+---
 
 ## Branch Workflow
 
@@ -240,28 +322,31 @@ git commit
 git push
 ```
 
+---
 
+# 3. Pull Requests
 
+A Pull Request (PR) is a request to merge changes from one branch into another.
 
-# Pull Request (PR)
-
-A Pull Request is a request to add changes from one branch into another branch.
-
-For example:
+Example:
 
 ```text
-cli-feature
-     ↓
+feature branch
+↓
 Pull Request
-     ↓
+↓
+Review
+↓
+Merge
+↓
 main
 ```
 
-Instead of directly changing `main`, I can work on a feature branch and create a Pull Request.
+---
 
 ## Create a Pull Request
 
-After completing my work on a branch, I first push the changes:
+First push the feature branch:
 
 ```bash
 git add .
@@ -269,23 +354,24 @@ git commit -m "Add new feature"
 git push
 ```
 
-Then on GitHub:
-
-1. Open the repository.
-2. Click **Compare & pull request**.
-3. Select:
+On GitHub:
 
 ```text
 base: main
-compare: cli-feature
+compare: feature-branch
 ```
 
-Here:
+Meaning:
 
-- `base: main` = branch where the changes will be added
-- `compare: cli-feature` = branch containing my new changes
+```text
+base
+= branch receiving the changes
 
-Then add a PR title and description and click:
+compare
+= branch containing the new changes
+```
+
+Then click:
 
 ```text
 Create pull request
@@ -295,15 +381,15 @@ Create pull request
 
 ## Code Review
 
-Before merging a Pull Request, another developer can review the code.
+Before merging, another developer can review the code.
 
-A reviewer checks things like:
+The reviewer may check:
 
-- Does the code work correctly?
-- Are there any bugs?
-- Is the code easy to understand?
-- Does it follow the team's coding style?
-- Are there any unnecessary changes?
+- Does the code work?
+- Are there bugs?
+- Is the code understandable?
+- Does it follow team standards?
+- Are there unnecessary changes?
 
 The reviewer can:
 
@@ -321,15 +407,13 @@ Request changes
 
 ## Assign a Reviewer
 
-When creating a Pull Request, I can assign a reviewer from the **Reviewers** section.
-
-Usually the reviewer can be:
+A reviewer may be:
 
 - Team Lead
 - Senior Developer
 - Another team member
 
-The workflow becomes:
+Workflow:
 
 ```text
 Create PR
@@ -345,13 +429,11 @@ Merge
 
 ---
 
-## If the Reviewer Requests Changes
+## If Changes Are Requested
 
-If the reviewer finds a problem, I do not need to create another Pull Request.
+There is usually no need to create a new PR.
 
-I make the changes in the **same branch**.
-
-Then:
+Fix the code in the same branch:
 
 ```bash
 git add .
@@ -359,35 +441,31 @@ git commit -m "Fix issues from code review"
 git push
 ```
 
-The existing Pull Request automatically updates with the new commit.
+The existing Pull Request updates automatically.
 
-Then the reviewer can review the changes again.
+Flow:
 
 ```text
 PR created
 ↓
 Reviewer requests changes
 ↓
-Fix the code
+Fix code
 ↓
 Commit
 ↓
 Push
 ↓
-Existing PR updates automatically
+Same PR updates
 ↓
-Reviewer reviews again
-↓
-Approve
+Review again
 ```
 
 ---
 
 ## Merge the Pull Request
 
-After the PR is reviewed and approved, an authorized developer can merge it into `main`.
-
-On GitHub:
+After approval, an authorized developer can merge the PR.
 
 ```text
 Merge pull request
@@ -395,49 +473,53 @@ Merge pull request
 Confirm merge
 ```
 
-Whether I can merge the PR depends on my repository permissions and the team's branch protection rules.
-
-In many teams:
-
-```text
-Developer creates PR
-↓
-Team Lead / Reviewer checks it
-↓
-Reviewer approves
-↓
-Authorized developer merges it
-```
+Who can merge depends on repository permissions and branch protection rules.
 
 ---
 
-# Git Pull
+# 4. Git Pull and Fetch
 
-After the Pull Request is merged on GitHub, the remote `main` branch has the latest code.
-
-My local `main` may still have the old code.
-
-First switch to `main`:
+## Git Fetch
 
 ```bash
-git switch main
+git fetch
 ```
 
-Then:
+`git fetch` gets the latest information from the remote repository.
+
+It does **not** update the current working files.
+
+Simple meaning:
+
+```text
+Check what changed on GitHub
+but
+do not apply the changes yet
+```
+
+Useful for:
+
+- New remote branches
+- New remote commits
+- Updating remote information
+
+---
+
+## Git Pull
 
 ```bash
 git pull
 ```
 
-`git pull` downloads the latest changes and updates my local branch.
+`git pull` gets remote changes and updates the current local branch.
 
 Example:
 
 ```text
-GitHub main:
+GitHub:
 A → B → C
 
-Local main:
+Local:
 A → B
 ```
 
@@ -447,7 +529,7 @@ After:
 git pull
 ```
 
-Local `main` becomes:
+Local becomes:
 
 ```text
 A → B → C
@@ -455,97 +537,57 @@ A → B → C
 
 ---
 
-# Git Fetch vs Git Pull
+## Fetch vs Pull
 
-## `git fetch`
-
-```bash
+```text
 git fetch
-```
+= get remote information
+= current files stay unchanged
 
-`git fetch` gets the latest information from the remote repository but does **not** change my current working files.
-
-Simple meaning:
-
-> Check what is new on GitHub without applying it to my current branch.
-
-It is useful for discovering new remote branches and commits.
-
-Example:
-
-```bash
-git fetch
-git branch -r
+git pull
+= get remote changes
++ update current branch
 ```
 
 ---
 
-## `git pull`
+## After a Pull Request Is Merged
+
+Switch to `main`:
 
 ```bash
-git pull
-```
-
-`git pull` gets the latest changes and updates my current local branch.
-
-Simple difference:
-
-```text
-git fetch
-= Get information about remote changes
-= Don't change my current files
-
-git pull
-= Get remote changes
-+ Update my current branch
-```
-
----
-
-# Pull Request Workflow
-
-```text
-Work on feature branch
-↓
-git add .
-↓
-git commit
-↓
-git push
-↓
-Create Pull Request
-↓
-Assign Reviewer
-↓
-Code Review
-↓
-Fix changes if needed
-↓
-Reviewer approves
-↓
-Merge into main
-↓
 git switch main
-↓
+```
+
+Then:
+
+```bash
 git pull
 ```
 
+This updates the local `main` with the newly merged code.
 
+---
 
-```md
-# Git and GitHub Using VS Code UI
+# 5. Git Using VS Code UI
 
-VS Code provides a graphical interface for Git, so many Git tasks can be done without using terminal commands.
+VS Code provides a graphical interface for Git.
 
-## Open Source Control
-
-Open the Source Control panel from the left sidebar or use:
+Open Source Control:
 
 ```text
 Ctrl + Shift + G
 ```
 
-The Source Control panel shows changed, staged, and untracked files.
+---
+
+## Source Control Panel
+
+The Source Control panel shows:
+
+- Changed files
+- Staged files
+- Untracked files
 
 This is similar to:
 
@@ -555,23 +597,23 @@ git status
 
 ---
 
-## Stage Changes Using VS Code UI
+## Stage Changes Using VS Code
 
-After changing a file, it appears under:
+Changed files appear under:
 
 ```text
 Changes
 ```
 
-Click the `+` icon beside the file.
+Click the `+` icon beside a file.
 
-This is the same as:
+This is similar to:
 
 ```bash
-git add file-name
+git add filename
 ```
 
-After staging, the file moves to:
+The file moves to:
 
 ```text
 Staged Changes
@@ -579,11 +621,11 @@ Staged Changes
 
 ---
 
-## Commit Using VS Code UI
+## Commit Using VS Code
 
 After staging:
 
-1. Write a commit message in the Source Control message box.
+1. Write a commit message.
 2. Click **Commit**.
 
 This is similar to:
@@ -594,9 +636,9 @@ git commit -m "commit message"
 
 ---
 
-## Push Using VS Code UI
+## Push Using VS Code
 
-After committing, VS Code may show:
+VS Code may show:
 
 ```text
 Push
@@ -607,8 +649,6 @@ or:
 ```text
 Sync Changes
 ```
-
-Click it to send the commit to GitHub.
 
 This is similar to:
 
@@ -622,7 +662,11 @@ Example:
 ↑1
 ```
 
-means there is 1 local commit that has not been pushed yet.
+Means:
+
+```text
+1 local commit has not been pushed
+```
 
 Example:
 
@@ -630,18 +674,18 @@ Example:
 ↓2 ↑1
 ```
 
-means:
+Means:
 
 ```text
-↓2 = 2 remote commits are not available locally
-↑1 = 1 local commit has not been pushed
+↓2 = 2 remote commits are not local yet
+↑1 = 1 local commit is not pushed yet
 ```
 
 ---
 
-# Create a Branch Using VS Code UI
+## Create a Branch Using VS Code UI
 
-Click the current branch name from the bottom-left corner of VS Code.
+Click the current branch name in the bottom-left corner.
 
 Example:
 
@@ -649,35 +693,33 @@ Example:
 main
 ```
 
-Then select:
+Choose:
 
 ```text
 Create new branch...
 ```
 
-Enter a branch name, for example:
+Enter:
 
 ```text
 ui-feature
 ```
 
-Choose `main` as the source branch if needed.
+Choose `main` as the starting branch if needed.
 
-VS Code creates the branch and usually switches to it automatically.
+VS Code usually creates and switches to the new branch automatically.
 
 ---
 
-## Publish the Branch
+## Publish a Branch
 
-A newly created branch exists only locally at first.
+A newly created branch initially exists only locally.
 
-VS Code may show:
+Click:
 
 ```text
 Publish Branch
 ```
-
-Click it to publish the branch to GitHub.
 
 This is similar to:
 
@@ -688,140 +730,71 @@ git push -u origin ui-feature
 After publishing:
 
 ```text
-Local branch:
+Local:
 ui-feature
 
-Remote branch:
+Remote:
 origin/ui-feature
 ```
 
 ---
 
-## Work on the UI Branch
+## Switching Branches with Uncommitted Changes
 
-Example file:
-
-```text
-ui.js
-```
-
-Example code:
-
-```js
-console.log("This file was created using the VS Code Git UI");
-```
-
-Then use the VS Code UI workflow:
-
-```text
-Change file
-↓
-Click +
-↓
-Stage Changes
-↓
-Write commit message
-↓
-Commit
-↓
-Push / Sync Changes
-```
-
----
-
-# Switching Branches with Uncommitted Changes
-
-Suppose the current branch is:
+Suppose `ui.js` is created on:
 
 ```text
 ui-feature
 ```
 
-and a new file is created:
+but it is not committed.
 
-```text
-ui.js
-```
+Then another branch is selected.
 
-but the file is not committed yet.
+If Git allows the switch, the uncommitted change may remain in the working directory.
 
-Then switch to another branch:
-
-```bash
-git switch another-feature
-```
-
-If Git allows the branch switch, the uncommitted file may still remain in the working directory.
-
-If the file is then staged and committed while on `another-feature`:
+If the file is committed while on another branch:
 
 ```bash
 git add ui.js
 git commit -m "Add ui.js"
-git push
 ```
 
-the commit belongs to:
+that commit belongs to the **current branch**.
 
-```text
-another-feature
-```
+Important rule:
 
-not:
+> A commit belongs to the branch that is active when the commit is created.
 
-```text
-ui-feature
-```
-
-## Important Rule
-
-The commit belongs to the branch that is active when the commit is created.
-
-Example:
-
-```text
-Create ui.js on ui-feature
-↓
-Do not commit
-↓
-Switch to another-feature
-↓
-git add
-↓
-git commit
-↓
-Commit belongs to another-feature
-```
-
-Git may prevent switching branches if the uncommitted changes conflict with files in the target branch.
-
-Before switching branches, check:
+Before switching branches:
 
 ```bash
 git status
 ```
 
-This helps confirm whether there are any uncommitted changes.
-```
+Check for unfinished changes.
 
-# Git Reset Practice Notes
+---
 
-## What `git reset` does
+# 6. Git Reset
 
 `git reset` moves the current branch to another commit.
 
-The reset mode decides what happens to:
+The reset mode controls what happens to:
 
-1. The staging area
-2. The files in the working directory
+1. Commit history
+2. Staging area
+3. Working files
 
-The three main modes are:
+---
 
-| Mode | Commit removed? | Changes staged? | Changes kept? |
-|---|---:|---:|---:|
+## Three Reset Modes
+
+| Mode | Commit Removed | Changes Staged | Changes Kept |
+|---|---|---|---|
 | `--soft` | Yes | Yes | Yes |
 | `--mixed` | Yes | No | Yes |
-| `--hard` | Yes | No | No, for tracked files |
+| `--hard` | Yes | No | No for tracked changes |
 
 Simple memory rule:
 
@@ -831,381 +804,210 @@ mixed = keep changes unstaged
 hard  = discard tracked changes
 ```
 
-## Our practice history
+---
 
-We created four files and committed each one separately:
+## HEAD
 
-```bash
-echo "File A" > a.txt
-git add a.txt
-git commit -m "Add a.txt"
+`HEAD` means the current position in Git history.
 
-echo "File B" > b.txt
-git add b.txt
-git commit -m "Add b.txt"
-
-echo "File C" > c.txt
-git add c.txt
-git commit -m "Add c.txt"
-
-echo "File D" > d.txt
-git add d.txt
-git commit -m "Add d.txt"
-```
-
-This created the following history:
-
-```text
-ab39f57  Add a.txt
-    ↓
-47a9db8  Add b.txt
-    ↓
-da60eb2  Add c.txt
-    ↓
-8613099  Add d.txt  ← HEAD
-```
-
-`HEAD` shows the current position of the branch.
-
-## Mixed reset practice
-
-We moved from commit D back to commit C:
-
-```bash
-git reset --mixed da60eb2
-```
-
-The history changed from:
-
-```text
-A → B → C → D
-```
-
-to:
-
-```text
-A → B → C  ← HEAD
-```
-
-Commit D was removed from the branch, but `d.txt` remained on the computer.
-
-`git status` showed:
-
-```text
-Untracked files:
-    d.txt
-```
-
-Why was `d.txt` untracked?
-
-- Commit D originally introduced `d.txt`.
-- After moving back to C, Git no longer had a commit tracking `d.txt`.
-- Mixed reset kept the actual file.
-- Git therefore considered `d.txt` a new, untracked file.
-
-Mixed reset means:
-
-```text
-Move the branch
-Reset the staging area
-Keep the files
-```
-
-## Soft reset practice
-
-Next, we moved from commit C back to commit B:
-
-```bash
-git reset --soft 47a9db8
-```
-
-The history became:
-
-```text
-A → B  ← HEAD
-```
-
-`git status` showed:
-
-```text
-Changes to be committed:
-    new file: c.txt
-
-Untracked files:
-    d.txt
-```
-
-Why was `c.txt` staged?
-
-- Commit C introduced `c.txt`.
-- Soft reset removed commit C from the branch.
-- Soft reset kept C's changes in the staging area.
-- Therefore, `c.txt` was ready to commit again.
-
-Why was `d.txt` still untracked?
-
-- `d.txt` was already untracked before the soft reset.
-- Soft reset did not automatically stage that unrelated untracked file.
-
-Soft reset means:
-
-```text
-Move the branch
-Keep the staging area
-Keep the files
-```
-
-## Hard reset practice
-
-Finally, we moved from commit B back to commit A:
-
-```bash
-git reset --hard ab39f57
-```
-
-The history became:
-
-```text
-A  ← HEAD
-```
-
-Hard reset made the staging area and tracked files match commit A.
-
-- `b.txt` was removed because commit B introduced it.
-- The staged `c.txt` change was removed.
-- `d.txt` remained because it was untracked.
-
-Important:
-
-> `git reset --hard` discards tracked changes, but it normally does not delete untracked files.
-
-Hard reset means:
-
-```text
-Move the branch
-Reset the staging area
-Reset tracked files
-```
-
-## Resetting commits that were already pushed
-
-We pushed all four commits to GitHub:
-
-```bash
-git push
-```
-
-After resetting locally, the local branch was behind the GitHub branch.
-
-A normal push could not move GitHub backward because doing that would rewrite published history.
-
-For our intentional practice, we used a force push. The safer command is:
-
-```bash
-git push --force-with-lease origin reset_practice
-```
-
-`--force-with-lease` is safer than `-f` or `--force`.
-
-It refuses the push if the remote branch has changed unexpectedly.
-
-The force push changed the GitHub branch from:
-
-```text
-A → B → C → D
-```
-
-to:
+Example:
 
 ```text
 A → B → C
+        ↑
+       HEAD
 ```
 
-Use force push only on:
+One commit before HEAD:
 
-- A personal practice branch
-- A branch where everyone understands that history will be rewritten
+```text
+HEAD~1
+```
 
-For an important shared branch, normally use `git revert` instead:
+Two commits before HEAD:
+
+```text
+HEAD~2
+```
+
+---
+
+## Mixed Reset
+
+```bash
+git reset --mixed HEAD~1
+```
+
+or simply:
+
+```bash
+git reset HEAD~1
+```
+
+Meaning:
+
+```text
+Undo commit
+Keep code
+Unstage changes
+```
+
+Example:
+
+```text
+Before:
+A → B → C
+
+After:
+A → B
+```
+
+Changes from C remain in the working directory.
+
+---
+
+## Soft Reset
+
+```bash
+git reset --soft HEAD~1
+```
+
+Meaning:
+
+```text
+Undo commit
+Keep code
+Keep changes staged
+```
+
+The changes are ready to commit again.
+
+---
+
+## Hard Reset
+
+```bash
+git reset --hard HEAD~1
+```
+
+Meaning:
+
+```text
+Undo commit
+Discard tracked changes
+```
+
+This should be used carefully.
+
+Important:
+
+> `git reset --hard` normally does not remove untracked files.
+
+---
+
+## Reset a Specific Commit
+
+Check history:
+
+```bash
+git log --oneline
+```
+
+Then:
+
+```bash
+git reset --mixed <commit-id>
+```
+
+or:
+
+```bash
+git reset --soft <commit-id>
+```
+
+or:
+
+```bash
+git reset --hard <commit-id>
+```
+
+---
+
+## Reset After Code Was Already Pushed
+
+If history was already pushed to GitHub, a normal push may be rejected after resetting.
+
+For intentional history rewriting on a safe practice branch:
+
+```bash
+git push --force-with-lease origin branch-name
+```
+
+`--force-with-lease` is safer than:
+
+```bash
+git push --force
+```
+
+For important shared branches, `git revert` is usually safer:
 
 ```bash
 git revert <commit-id>
 git push
 ```
 
-`git revert` does not remove the old commit. It creates a new commit that reverses it.
+`git revert` creates a new commit that reverses an old commit.
 
-## Understanding the remote status
+It does not remove the old commit from history.
 
-After resetting a pushed branch, Git showed:
+---
 
-```text
-Your branch is behind 'origin/reset_practice' by 1 commit.
-```
+## Recover After an Accidental Reset
 
-This meant:
-
-- The local branch had moved backward.
-- GitHub still pointed to the newer commit.
-- `origin/reset_practice` represented Git's last known position of the GitHub branch.
-
-In VS Code:
-
-```text
-Sync Changes 1↓
-```
-
-meant GitHub had one commit that the local branch did not have.
-
-Sync Changes normally performs:
-
-```text
-Pull incoming commits
-Then push outgoing commits
-```
-
-## Useful commands
-
-Show the commit history:
-
-```bash
-git log --oneline
-```
-
-Show the latest five commits:
-
-```bash
-git log --oneline -5
-```
-
-Check the current files and branch status:
-
-```bash
-git status
-```
-
-Show the current branch name:
-
-```bash
-git branch --show-current
-```
-
-Show recent branch movements, including resets:
+Check recent Git movements:
 
 ```bash
 git reflog
 ```
 
-## Recovering after an accidental reset
+Find the old commit.
 
-Git normally records recent branch movements in the reflog:
-
-```bash
-git reflog
-```
-
-Find the commit that existed before the reset.
-
-Then move the branch back to it:
+Then:
 
 ```bash
 git reset --mixed <old-commit-id>
 ```
 
-You can also create a safety branch before practising:
+A safety branch can also be created before practicing:
 
 ```bash
 git branch backup-before-reset
 ```
 
-The backup branch continues pointing to the original commit, even after resetting the practice branch.
+---
 
-## LF and CRLF warning
-
-During the exercise, Git printed:
+## Reset Summary
 
 ```text
-LF will be replaced by CRLF the next time Git touches it
+--soft
+= remove commit
+= changes stay staged
+
+--mixed
+= remove commit
+= changes stay
+= changes become unstaged
+
+--hard
+= remove commit
+= discard tracked changes
 ```
 
-This was only a line-ending warning. The commit still succeeded.
+---
 
-- `LF` is commonly used on Linux and macOS.
-- `CRLF` is commonly used on Windows.
+# 7. Git Stash
 
-## Final summary
-
-Starting history:
-
-```text
-A → B → C → D
-```
-
-### Mixed reset from D to C
-
-```bash
-git reset --mixed da60eb2
-```
-
-Result:
-
-```text
-A → B → C
-```
-
-- Commit D was removed.
-- `d.txt` remained.
-- `d.txt` became untracked.
-
-### Soft reset from C to B
-
-```bash
-git reset --soft 47a9db8
-```
-
-Result:
-
-```text
-A → B
-```
-
-- Commit C was removed.
-- `c.txt` remained staged.
-- `d.txt` remained untracked.
-
-### Hard reset from B to A
-
-```bash
-git reset --hard ab39f57
-```
-
-Result:
-
-```text
-A
-```
-
-- Commit B was removed.
-- Tracked changes were discarded.
-- Untracked `d.txt` remained.
-
-## Main lesson
-
-> Reset changes where a branch points. The reset mode controls what happens to the staging area and tracked working files.
-
-```text
---soft  = remove commit, keep changes staged
---mixed = remove commit, keep changes unstaged
---hard  = remove commit and discard tracked changes
-```
-
-
-```md
-# Git Stash
-
-`git stash` is used to temporarily save unfinished changes without creating a commit.
-
-It is useful when work is not finished, but another task needs to be done first.
+`git stash` temporarily saves unfinished changes without creating a commit.
 
 ---
 
@@ -1214,75 +1016,43 @@ It is useful when work is not finished, but another task needs to be done first.
 Example:
 
 ```text
-Working on a feature
+Working on feature A
 ↓
-Changes are not finished
+Work is unfinished
 ↓
-Need to switch branch for another task
+Urgent task arrives
+↓
+Need to switch branch
 ↓
 git stash
 ↓
-Changes are temporarily hidden
+Unfinished work is temporarily hidden
 ↓
-Do other work
+Complete urgent work
 ↓
-Come back
+Return
 ↓
-Restore the changes
+Restore unfinished work
 ```
 
 Simple idea:
 
 ```text
-git stash = temporarily save unfinished work
+git stash
+= temporarily put unfinished work aside
 ```
 
 ---
 
-## Practice Branch
-
-A separate branch was created:
-
-```bash
-git branch stash-practice
-git switch stash-practice
-```
-
----
-
-## Create an Unfinished Change
-
-Example file:
-
-```text
-stash.js
-```
-
-Example code:
-
-```js
-console.log("Learning git stash");
-```
-
-The file was not committed.
-
-Check changes:
-
-```bash
-git status
-```
-
----
-
-## Stash the Changes
-
-For tracked files:
+## Stash Tracked Changes
 
 ```bash
 git stash
 ```
 
-For new/untracked files too:
+---
+
+## Stash Tracked and Untracked Files
 
 ```bash
 git stash -u
@@ -1294,12 +1064,6 @@ git stash -u
 include untracked files
 ```
 
-After stashing, the unfinished changes disappear from the working directory.
-
-They are not deleted.
-
-Git saves them temporarily.
-
 ---
 
 ## Check Saved Stashes
@@ -1307,45 +1071,180 @@ Git saves them temporarily.
 ```bash
 git stash list
 ```
-# Git Bisect
 
-`git bisect` is used to find which commit first introduced a bug.
+Example:
 
-It checks commits using a half-by-half search instead of checking every commit one by one.
+```text
+stash@{0}: WIP on stash-practice: 1e469cc Merge pull request #5
+```
+
+Meaning:
+
+```text
+stash@{0}
+= latest stash
+
+WIP on stash-practice
+= stash was created on stash-practice
+
+1e469cc
+= commit the branch pointed to at that time
+```
+
+---
+
+## Restore with Pop
+
+```bash
+git stash pop
+```
+
+Meaning:
+
+```text
+Restore changes
++
+Remove stash
+```
+
+---
+
+## Restore with Apply
+
+```bash
+git stash apply
+```
+
+Meaning:
+
+```text
+Restore changes
++
+Keep stash
+```
+
+---
+
+## Pop vs Apply
+
+```text
+pop
+= restore + remove
+
+apply
+= restore + keep
+```
+
+Easy memory:
+
+```text
+pop   = bring it back and remove backup
+apply = bring it back and keep backup
+```
+
+---
+
+## Delete a Stash
+
+```bash
+git stash drop stash@{0}
+```
+
+Check:
+
+```bash
+git stash list
+```
+
+---
+
+## Git Stash Workflow
+
+```text
+Make unfinished changes
+↓
+git status
+↓
+git stash
+or
+git stash -u
+↓
+Changes are temporarily hidden
+↓
+Switch branch
+↓
+Do other work
+↓
+Come back
+↓
+git stash pop
+or
+git stash apply
+```
+
+---
+
+# 8. Git Bisect
+
+`git bisect` helps find which commit first introduced a bug.
+
+It searches by repeatedly checking commits around the middle.
 
 ---
 
 ## Example
 
-Suppose the commit history looks like this:
+Suppose:
 
 ```text
 Commit 1 ✅ Good
 Commit 2 ✅ Good
-Commit 3 ❌ Bug starts here
+Commit 3 ❌ Bug starts
 Commit 4 ❌ Bad
 Commit 5 ❌ Bad
 ```
 
-We know an old commit was working and the current commit is broken.
+The exact bad commit is unknown.
 
-`git bisect` helps find the first bad commit.
+`git bisect` helps find it.
 
 ---
 
-## Start Git Bisect
+## Check Commit History
+
+```bash
+git log --oneline
+```
+
+Example:
+
+```text
+997a7cd Add divide function
+84607ff Add multiply function
+864230b Add subtract function
+dde8a5d Add sub
+51bbfef Add initial add function
+```
+
+---
+
+## Start Bisect
 
 ```bash
 git bisect start
 ```
 
-This starts bisect mode.
+Meaning:
+
+```text
+Start searching for the bad commit.
+```
 
 ---
 
-## Mark the Current Commit as Bad
+## Mark Current Commit as Bad
 
-If the current code is broken:
+If the current version is broken:
 
 ```bash
 git bisect bad
@@ -1354,28 +1253,30 @@ git bisect bad
 Example:
 
 ```text
-5 - 2 should be 3
+Expected:
 
-But output is:
+5 - 2 = 3
 
-7
+Actual:
+
+5 - 2 = 7
 ```
 
 So the current commit is bad.
 
 ---
 
-## Mark an Older Commit as Good
+## Mark an Older Good Commit
 
-First check the commit history:
+Suppose:
 
-```bash
-git log --oneline
+```text
+51bbfef
 ```
 
-Then choose a commit that was working correctly.
+was working.
 
-Example:
+Run:
 
 ```bash
 git bisect good 51bbfef
@@ -1393,205 +1294,19 @@ Current commit = Bad ❌
 
 ## How Git Bisect Searches
 
-Git checks a commit around the middle.
+Git chooses a commit around the middle.
 
 Example:
 
 ```text
-stash@{0}: WIP on stash-practice: 1e469cc Merge pull request #5
-```
-
-Meaning:
-
-```text
-stash@{0}
-= latest stash
-
-WIP on stash-practice
-= stash was created while working on stash-practice
-
-1e469cc
-= commit the branch was pointing to at that time
-```
-
----
-
-# Git Stash Pop
-
-```bash
-git stash pop
-```
-
-This brings back the latest stashed changes.
-
-It also removes that stash from the stash list.
-
-Simple meaning:
-
-```text
-git stash pop
-= restore changes + remove stash
-```
-
-Example:
-
-```text
-unfinished work
-↓
-git stash
-↓
-work hidden
-↓
-git stash pop
-↓
-work comes back
-```
-
----
-
-# Git Stash Apply
-
-```bash
-git stash apply
-```
-
-This also brings back the stashed changes.
-
-But unlike `pop`, it keeps the stash saved.
-
-Simple meaning:
-
-```text
-git stash apply
-= restore changes + keep stash
-```
-
----
-
-## Pop vs Apply
-
-```text
-git stash pop
-= restore + remove stash
-
-git stash apply
-= restore + keep stash
-```
-
-Easy way to remember:
-
-```text
-pop   = bring it back and remove backup
-apply = bring it back and keep backup
-```
-
----
-
-# Delete a Stash Manually
-
-If `git stash apply` was used, the stash is still saved.
-
-Check:
-
-```bash
-git stash list
-```
-
-Then delete a specific stash:
-
-```bash
-git stash drop stash@{0}
-```
-
-Meaning:
-
-```text
-delete this saved stash
-```
-
-Check again:
-
-```bash
-git stash list
-```
-
----
-
-# Git Stash Workflow
-
-```text
-Make unfinished changes
-↓
-git status
-↓
-git stash
-or
-git stash -u
-↓
-Changes are temporarily hidden
-↓
-Switch branch / do other work
-↓
-Come back
-↓
-git stash pop
-or
-git stash apply
-```
-
----
-
-# Simple Summary
-
-```bash
-git stash
-```
-
-Temporarily save tracked changes.
-
-```bash
-git stash -u
-```
-
-Temporarily save tracked and untracked changes.
-
-```bash
-git stash list
-```
-
-Show saved stashes.
-
-```bash
-git stash pop
-```
-
-Restore changes and remove the stash.
-
-```bash
-git stash apply
-```
-
-Restore changes but keep the stash.
-
-```bash
-git stash drop stash@{0}
-```
-
-Delete a specific stash.
 Commit 1 ✅
 Commit 2 ✅
-Commit 3 ❌
+Commit 3 ❓
 Commit 4 ❌
 Commit 5 ❌
 ```
 
-Git may first check:
-
-```text
-Commit 3
-```
-
-Run the program:
+Test the current version:
 
 ```bash
 node calculator.js
@@ -1609,9 +1324,9 @@ If it is broken:
 git bisect bad
 ```
 
-Git then removes half of the commits from the search.
+Git removes half of the remaining search area.
 
-It keeps repeating this process until it finds the first bad commit.
+It repeats until the first bad commit is found.
 
 This method is called:
 
@@ -1621,7 +1336,27 @@ Binary Search
 
 ---
 
-## First Bad Commit Found
+## Example Search
+
+```text
+1 ✅   2 ✅   3 ❌   4 ❌   5 ❌
+               ↑
+         Git checks here
+```
+
+If Commit 3 is bad:
+
+```text
+The bug must be between Commit 1 and Commit 3.
+```
+
+Git can ignore Commit 4 and Commit 5.
+
+Then it checks the remaining commits.
+
+---
+
+## First Bad Commit
 
 In the practice example, Git found:
 
@@ -1635,21 +1370,22 @@ Git showed:
 864230b is the first bad commit
 ```
 
-This means:
+Meaning:
 
 ```text
-Before 864230b = code was working ✅
+Before 864230b
+= working ✅
 
-864230b = bug was introduced ❌
+864230b
+= bug introduced ❌
 
-After 864230b = bug continued ❌
+After 864230b
+= bug continues ❌
 ```
 
 ---
 
 ## End Git Bisect
-
-After finding the bad commit:
 
 ```bash
 git bisect reset
@@ -1666,70 +1402,162 @@ Bug found
 ↓
 git log --oneline
 ↓
+Find one known good commit
+↓
 git bisect start
 ↓
 git bisect bad
 ↓
 git bisect good <good-commit-id>
 ↓
-Git checks a commit
+Git checks a middle commit
 ↓
-Test the code
+Test code
 ↓
 Working → git bisect good
 Broken  → git bisect bad
 ↓
 Repeat
 ↓
-Git finds the first bad commit
+Git finds first bad commit
 ↓
 git bisect reset
 ```
 
 ---
 
-## Simple Summary
+# 9. Quick Command Reference
+
+## Basic Git
 
 ```bash
-git bisect start
+git init
+git status
+git add .
+git commit -m "message"
+git push
+git pull
 ```
-
-Start searching.
-
-```bash
-git bisect bad
-```
-
-Current commit is broken.
-
-```bash
-git bisect good <commit-id>
-```
-
-This older commit was working.
-
-```bash
-git bisect good
-```
-
-The commit Git is currently testing works.
-
-```bash
-git bisect bad
-```
-
-The commit Git is currently testing is broken.
-
-```bash
-git bisect reset
-```
-
-Finish bisect and go back to the original position.
 
 ---
 
-## Main Idea
+## Branches
 
-`git stash` is useful when unfinished work needs to be kept temporarily without creating a commit.
-`git bisect` finds the commit where a bug started by checking commits in the middle and reducing the search area by half each time.
+```bash
+git branch
+git branch -r
+git branch branch-name
+git switch branch-name
+git fetch
+```
+
+---
+
+## Remote
+
+```bash
+git remote -v
+git remote add origin <repository-url>
+```
+
+---
+
+## Reset
+
+```bash
+git reset --soft HEAD~1
+git reset --mixed HEAD~1
+git reset --hard HEAD~1
+git reflog
+```
+
+---
+
+## Stash
+
+```bash
+git stash
+git stash -u
+git stash list
+git stash pop
+git stash apply
+git stash drop stash@{0}
+```
+
+---
+
+## Bisect
+
+```bash
+git bisect start
+git bisect bad
+git bisect good <commit-id>
+git bisect good
+git bisect bad
+git bisect reset
+```
+
+---
+
+# Overall Git Workflow
+
+```text
+Create / change code
+↓
+git status
+↓
+git add
+↓
+git commit
+↓
+git push
+↓
+Create Pull Request
+↓
+Code Review
+↓
+Merge
+↓
+git switch main
+↓
+git pull
+```
+
+---
+
+# Main Concepts to Remember
+
+```text
+Git
+= tracks code changes locally
+
+GitHub
+= stores and shares Git repositories online
+
+Branch
+= separate line of development
+
+Commit
+= saved snapshot
+
+Staging
+= changes selected for the next commit
+
+Pull Request
+= request to merge branch changes
+
+Fetch
+= check remote changes without applying them
+
+Pull
+= get and apply remote changes
+
+Reset
+= move branch back to another commit
+
+Stash
+= temporarily save unfinished work
+
+Bisect
+= find the commit that introduced a bug
 ```
