@@ -3,7 +3,7 @@ function add(a, b) {
 }
 
 function subtract(a, b) {
-  return a - b;
+  return a + b; // BUG: should be a - b
 }
 
 console.log(add(2, 3));
